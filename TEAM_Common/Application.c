@@ -213,14 +213,13 @@ void APP_Start(void) {
 	//Init
 	PL_Init();
 	APP_AdoptToHardware();
-	EVNT_Init();
 	EVNT_SetEvent(EVNT_STARTUP);
 
 	// Tasks
 	xTaskCreate(MainLoop, "main",  500/sizeof(StackType_t), (void*) NULL,
-			tskIDLE_PRIORITY + 2, NULL);
+			tskIDLE_PRIORITY + 1, NULL);
 	xTaskCreate(BlinkyTask, "blink", 500/sizeof(StackType_t), (void*) NULL,
-				tskIDLE_PRIORITY + 3, NULL);
+				tskIDLE_PRIORITY + 1, NULL);
 	// Start Scheduler
 	vTaskStartScheduler();
 
@@ -239,6 +238,7 @@ static void MainLoop(void) {
 		//This is the main programm loop in a task
 		//Events Init Data Structure
 		EVNT_HandleEvent(APP_EventHandler, TRUE);
+		vTaskDelay(pdMS_TO_TICKS(50));
 	}
 }
 
