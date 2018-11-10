@@ -216,13 +216,14 @@ void APP_Start(void) {
 	EVNT_SetEvent(EVNT_STARTUP);
 
 	// Tasks
-	xTaskCreate(MainLoop, "main",  500/sizeof(StackType_t), (void*) NULL,
-			tskIDLE_PRIORITY + 1, NULL);
-	xTaskCreate(BlinkyTask, "blink", 500/sizeof(StackType_t), (void*) NULL,
-				tskIDLE_PRIORITY + 1, NULL);
+	if(xTaskCreate(MainLoop, "main",  500/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+1, NULL)!= pdPASS){
+		for(;;){} //error case
+	}
+	if(xTaskCreate(BlinkyTask, "blink", 500/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+1, NULL)!= pdPASS){
+		for(;;){} //error case
+	}
 	// Start Scheduler
 	vTaskStartScheduler();
-
 
 }
 
@@ -236,9 +237,9 @@ static void BlinkyTask(void) {
 static void MainLoop(void) {
 	for (;;) {
 		//This is the main programm loop in a task
-		//Events Init Data Structure
-		EVNT_HandleEvent(APP_EventHandler, TRUE);
-		vTaskDelay(pdMS_TO_TICKS(50));
+		//KEYDBNC_Process(); //For polled Keys
+		EVNT_HandleEvent(APP_EventHandler, TRUE); //Check Events
+		vTaskDelay(pdMS_TO_TICKS(100));
 	}
 }
 
