@@ -98,33 +98,17 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=1
 	case EVNT_SW1_PRESSED:
 		LED1_Neg();
-		//BtnMsg(1, "pressed");
-		CLS1_SendStr("SW1 short pressed\n", CLS1_GetStdio()->stdOut);
+		BtnMsg(1, "short pressed");
 		BUZ_PlayTune(BUZ_TUNE_BUTTON);
-
 		break;
 	case EVNT_SW1_LPRESSED:
 		LED1_Neg();
-		//BtnMsg(1, "pressed");
-		CLS1_SendStr("SW1 long pressed\n", CLS1_GetStdio()->stdOut);
+		BtnMsg(1, "long pressed");
 		BUZ_PlayTune(BUZ_TUNE_BUTTON_LONG);
 		break;
 	case EVNT_SW1_RELEASED:
-			//BtnMsg(1, "pressed");
-			CLS1_SendStr("SW1 released\n", CLS1_GetStdio()->stdOut);
+			BtnMsg(1, "released");
 			break;
-		/*case EVNT_SW4_PRESSED:
-		 LED1_Neg();
-		 //BtnMsg(1, "pressed");
-		 CLS1_SendStr("SW4 pressed", CLS1_GetStdio()->stdOut);
-		 CLS1_SendNum16s(16, CLS1_GetStdio()->stdOut);
-		 break;
-		 case EVNT_SW2_PRESSED:
-		 LED1_Neg();
-		 //BtnMsg(1, "pressed");
-		 CLS1_SendStr("SW2 pressed", CLS1_GetStdio()->stdOut);
-		 break;
-		 */
 #endif
 	default:
 		break;
