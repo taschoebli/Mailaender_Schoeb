@@ -83,7 +83,7 @@ void APP_EventHandler(EVNT_Handle event) {
 	switch (event) {
 	case EVNT_STARTUP: {
 		int i;
-		BUZ_Beep(500, 1000);
+		//BUZ_Beep(500, 1000);
 		CLS1_SendStr("Program Started", CLS1_GetStdio()->stdOut);
 		for (i = 0; i < 5; i++) {
 			LED1_Neg();
@@ -98,17 +98,20 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=1
 	case EVNT_SW1_PRESSED:
 		LED1_Neg();
+        //CLS1_SendStr("SW1 short pressed\n", CLS1_GetStdio()->stdOut);
 		BtnMsg(1, "short pressed");
-		BUZ_PlayTune(BUZ_TUNE_BUTTON);
+		//BUZ_PlayTune(BUZ_TUNE_BUTTON);
 		break;
 	case EVNT_SW1_LPRESSED:
 		LED1_Neg();
+        //CLS1_SendStr("SW1 long pressed\n", CLS1_GetStdio()->stdOut);
 		BtnMsg(1, "long pressed");
-		BUZ_PlayTune(BUZ_TUNE_BUTTON_LONG);
+		//BUZ_PlayTune(BUZ_TUNE_BUTTON_LONG);
 		break;
 	case EVNT_SW1_RELEASED:
-			BtnMsg(1, "released");
-			break;
+		//CLS1_SendStr("SW1 released\n", CLS1_GetStdio()->stdOut);
+		BtnMsg(1, "released");
+		break;
 #endif
 	default:
 		break;
@@ -214,7 +217,7 @@ void APP_Start(void) {
 static void BlinkyTask(void) {
 	for (;;) {
 		LED2_Neg();
-		vTaskDelay(pdMS_TO_TICKS(50));
+		vTaskDelay(pdMS_TO_TICKS(500));
 	}
 }
 
@@ -227,3 +230,14 @@ static void MainLoop(void) {
 	}
 }
 
+static void ZorkTask(void) {
+	zork_config();
+	run_zork_game();
+}
+
+
+void startZorkTask(void){
+	if(xTaskCreate(ZorkTask, "zork", 500/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+1, NULL)!= pdPASS){
+	      		for(;;){} //error case
+	      	}
+}

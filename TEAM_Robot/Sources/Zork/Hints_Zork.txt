@@ -1,0 +1,27 @@
+zork
+----
+- Note: Robot only (needs >128 KByte of Flash and >64 KByte of RAM)
+- Add Zork folder to Sources/Zork
+  - add include path to the compiler includes settings: ../Sources/Zork
+- FreeRTOS component: enable 'use User memory section' ==> Memory in second bank
+- Memory size is wrong in PEx: we have 128 KByte :-)
+  a) In the CPU component, Build Options, disabe generation of linker file
+  b) extend the two 32KByte RAM blocks to 64 KByte in the linker file (Project Settings > Linker_Files)
+  m_data      (RW) : ORIGIN = 0x1fff0000, LENGTH = 0x10000
+  m_data_20000000 (RW) : ORIGIN = 0x20000000, LENGTH = 0x10000
+
+- semihosting:
+   a) In the linker setting for the project (Cross ARM C++ Linker > Miscellaneous),
+   replace '-specs=nosys.specs' with '-specs=rdimon.specs'
+   b) In the launch configuration, enable Semihosting (launch configuration, Startup Tab)
+   See: https://mcuoneclipse.com/2015/05/27/semihosting-for-kinetis-design-studio-v3-0-0-and-gnu-arm-embedded-launchpad/
+
+  
+Hints:
+  - dedicated task to run Zork?
+  - add a new PL_CONFIG macro for the feature
+  - Shell command to start the game
+  - suspend/resume tasks?
+  - overwrite/replace _exit(): the game exits that way
+
+  

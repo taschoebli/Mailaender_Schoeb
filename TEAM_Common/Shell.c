@@ -315,6 +315,7 @@ static uint8_t SHELL_PrintHelp(const CLS1_StdIOType *io) {
   CLS1_SendHelpStr("Shell", "Shell commands\r\n", io->stdOut);
   CLS1_SendHelpStr("  help|status", "Print help or status information\r\n", io->stdOut);
   CLS1_SendHelpStr("  val <num>", "Assign number value\r\n", io->stdOut);
+  CLS1_SendHelpStr("  zork", "play Zork\r\n", io->stdOut);
   return ERR_OK;
 }
 
@@ -333,6 +334,7 @@ static uint8_t SHELL_PrintStatus(const CLS1_StdIOType *io) {
   return ERR_OK;
 }
 
+
 static uint8_t SHELL_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_StdIOType *io) {
   uint32_t val;
   const unsigned char *p;
@@ -343,7 +345,12 @@ static uint8_t SHELL_ParseCommand(const unsigned char *cmd, bool *handled, const
   } else if (UTIL1_strcmp((char*)cmd, CLS1_CMD_STATUS)==0 || UTIL1_strcmp((char*)cmd, "Shell status")==0) {
     *handled = TRUE;
     return SHELL_PrintStatus(io);
-  } else if (UTIL1_strncmp(cmd, "Shell val ", sizeof("Shell val ")-1)==0) {
+  } else if (UTIL1_strcmp((char*)cmd, CLS1_CMD_STATUS)==0 || UTIL1_strcmp((char*)cmd, "zork")==0) {
+      *handled = TRUE;
+      startZorkTask();
+      return;
+    }
+  	else if (UTIL1_strncmp(cmd, "Shell val ", sizeof("Shell val ")-1)==0) {
     p = cmd+sizeof("Shell val ")-1;
     if (UTIL1_xatoi(&p, &val)==ERR_OK) {
       SHELL_val = val;
