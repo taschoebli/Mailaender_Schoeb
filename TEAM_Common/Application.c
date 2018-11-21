@@ -236,8 +236,10 @@ static void ZorkTask(void) {
 }
 
 
+TaskHandle_t ZorkHandler;
+
 void startZorkTask(void){
-	if(xTaskCreate(ZorkTask, "zork", 500/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+1, NULL)!= pdPASS){
+	if(xTaskCreate(ZorkTask, "zork", 800/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+1, NULL)!= pdPASS){
 	      		for(;;){} //error case
 	      	}
 }

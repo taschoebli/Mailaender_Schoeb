@@ -197,5 +197,6 @@ void zork_config(void) {
 
 void _exit(int i) { /* own exit routine */
   CLS1_SendStr("exit Zork program\r\n", CLS1_GetStdio()->stdErr);
+  vTaskDelete(ZorkTask);
   for(;;) {}
 }
